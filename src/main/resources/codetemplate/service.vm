@@ -1,0 +1,60 @@
+package com.kingstardi.service.core;
+
+import com.kingstardi.entity.core.${className};
+import java.util.List;
+
+public interface ${className}Service {
+
+    /**
+    * 根据主键获取一条数据
+    *
+    * @param id
+    * @return
+    */
+    ${className} get(String id);
+
+    /**
+    * 查询多条记录（有分页）
+    * @param entity
+    * @return
+    */
+    List<${className}> getList(${className} entity) ;
+
+    /**
+    * 保存数据
+    *
+    * @param entity
+    */
+    void insert(${className} entity);
+
+    /**
+    * 按给定的属性保存数据
+    *
+    * @param entity
+    */
+    void insertSelective(${className} entity);
+
+    /**
+    * 更新数据（全部属性）
+    *
+    * @param entity
+    */
+    void update(${className} entity);
+
+    /**
+    * 更新数据（按给定的属性）
+    *
+    * @param entity
+    */
+    void updateSelective(${className} entity);
+
+    /**
+    * 根据主键删除一条数据
+    *
+    * @param id
+    * @return
+    */
+    void delete(String id);
+
+
+}

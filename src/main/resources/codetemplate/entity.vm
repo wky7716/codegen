@@ -1,0 +1,27 @@
+package com.kingstardi.entity.core;
+
+import com.kingstardi.entity.base.BaseEntity;
+
+import java.io.Serializable;
+#foreach ($field in $packageList)
+import ${field};
+#end
+
+public class ${className} extends BaseEntity implements Serializable {
+	
+	#foreach ($field in $fieldList)
+private ${field.datatype} ${field.fieldname}; // ${field.comment}
+	#end
+
+	#foreach ($field in $fieldList)
+
+	public ${field.datatype} ${field.getName}() {
+		return ${field.fieldname};
+	}
+
+	public void ${field.setName}(${field.datatype} ${field.fieldname}) {
+		this.${field.fieldname} =  ${field.fieldname};
+	}
+	#end
+
+}

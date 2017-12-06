@@ -1,0 +1,117 @@
+package com.kingstardi.core;
+
+import com.kingstardi.base.BaseController;
+import com.kingstardi.commons.utils.UUIDFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller; 
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;  
+import java.util.List;
+import com.kingstardi.entity.core.${className};
+import com.kingstardi.service.core.${className}Service;
+
+@Controller
+@RequestMapping(value = "/${classNameLowerCase}")
+public class ${className}Controller extends BaseController{
+ 
+ 
+	@Autowired
+	${className}Service service;
+	
+	/**
+	 *初始化创建
+	 */
+	@RequestMapping("/initInsert")
+	public ModelAndView initInsert() {
+		ModelAndView mv = new ModelAndView("/${classNameLowerCase}/${classNameLowerCase}_initInsert");
+		return mv;
+	}
+	
+	/**
+	 * 初始化修改
+	 */
+	@RequestMapping("/initUpdate")
+	public ModelAndView initUpdate(String id) {
+		ModelAndView mv = new ModelAndView("/${classNameLowerCase}/${classNameLowerCase}_initUpdate");
+		${className} entity = service.get(id);
+		if (null != entity) {
+			mv.addObject("entity",entity);
+		}
+		return mv;
+	}
+	
+	/**
+	 * 保存
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	@RequestMapping("/insert")
+	public ModelAndView insert(${className} entity) {
+		entity.setId(UUIDFactory.getUUIDStr());
+		service.insert(entity);
+		return redirect();
+	}
+	
+	/**
+	 * 修改
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	@RequestMapping("/update")
+	public ModelAndView update(${className} entity) {
+		service.update(entity);
+		return redirect();
+	}
+	
+	/**
+	 * 查看详情
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/get")
+	public ModelAndView get(String id) {
+		ModelAndView mv = new ModelAndView("/${classNameLowerCase}/${classNameLowerCase}_get");
+		mv.addObject("entity",service.get(id));
+		return mv;
+	}
+	
+	/**
+	 * 删除
+	 * 
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("/delete")
+	public ModelAndView delete(String id) {
+		service.delete(id);
+		return redirect();
+	}
+	
+	/**
+	 * 列表与查询
+	 * 
+	 * @param entity
+	 * @return
+	 */
+	@RequestMapping("/list")
+	public ModelAndView list(${className} entity) {
+		ModelAndView mv = new ModelAndView("/${classNameLowerCase}/${classNameLowerCase}_list");
+		List<${className}> list = service.getList(entity);
+		mv.addObject("list",list);
+		return mv;
+	}
+	
+	/**
+	 * 跳转到列表页:适用于新建/修改/删除后的转向
+	 * 
+	 * @return
+	 */
+	public ModelAndView redirect() {
+		ModelAndView mv = new ModelAndView("redirect:/${classNameLowerCase}/list");
+		return mv;
+	}
+
+}

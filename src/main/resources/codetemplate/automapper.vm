@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${namespace}">
+
+
+    <resultMap id="BaseResultMap" type="${resultClass}">
+	#foreach ($field in $fieldList)
+	<result property="${field.fieldname}" column="${field.fieldname}" />
+	#end
+</resultMap>
+
+	<!-- 通用查询结果列-->
+	<sql id="Columns">
+	#foreach ($field in $fieldList)
+#if(${velocityCount} ==  1)
+	${field.fieldname},##
+#elseif(${velocityCount} !=  ${fieldList.size()})
+${field.fieldname},##
+#else
+${field.fieldname}
+#end
+#end
+	</sql>
+
+	<!--根据主键查询-->
+	<select id="get" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select 
+		 <include refid="Columns" />
+		from ${tableName}
+		where id = #{value}
+	</select>
+
+	<!--条件查询-->
+	<select id="queryPage" parameterType="${resultClass}" resultMap="BaseResultMap">
+		select 
+			 <include refid="Columns" />
+		from ${tableName}
+		<where>
+#foreach ($field in $fieldList)
+#if(${field.datatype} == "String")##
+			<if test="${field.fieldname} != null and ${field.fieldname} != ''">
+				and ${field.fieldname} = #{${field.fieldname}}
+			</if>
+#else##
+			<if test="${field.fieldname} != null">
+				and ${field.fieldname} = #{${field.fieldname}}
+			</if>
+#end
+#end
+		</where>
+		<if test="createtime != null">
+			order by createtime
+		</if>
+	</select>
+
+	<!--插入数据-->
+	<insert id="insert" parameterType="${resultClass}" >
+		insert into ${tableName} (
+#foreach ($field in $fieldList)
+#if(${velocityCount} !=  ${fieldList.size()})
+			${field.fieldname},
+#else
+			${field.fieldname} 
+#end
+#end 		) values (
+#foreach ($field in $fieldList)
+#if(${velocityCount} !=  ${fieldList.size()})
+			#{${field.fieldname}},
+#else
+			#{${field.fieldname}} 
+#end
+#end 
+		)
+	</insert>
+
+	<!--选择插入数据-->
+	<insert id="insertSelective" parameterType="${resultClass}" >
+		insert into ${tableName}(
+#foreach ($field in $fieldList)
+#if(${velocityCount} ==  1)
+#if(${field.datatype} == "String")##
+			<if test="${field.fieldname} != null and ${field.fieldname}  != '' ">
+				${field.fieldname}
+			</if>
+#else
+			<if test="${field.fieldname} != null">
+				${field.fieldname}
+			</if>
+#end
+#else
+#if(${field.datatype} == "String")##
+			<if test="${field.fieldname} != null and ${field.fieldname}  != '' ">
+				,${field.fieldname}
+			</if>
+#else
+			<if test="${field.fieldname} != null">
+				,${field.fieldname}
+			</if>
+#end
+#end
+#end 		) values (
+#foreach ($field in $fieldList)
+#if(${velocityCount} ==  1)
+			<if test="${field.fieldname} != null and ${field.fieldname}  != '' ">
+				#{${field.fieldname}}
+			</if>		
+#else
+#if(${field.datatype} == "String")##
+			<if test="${field.fieldname} != null and ${field.fieldname}  != '' ">
+				,#{${field.fieldname}}
+			</if>
+#else
+			<if test="${field.fieldname} != null">
+				,#{${field.fieldname}}
+			</if>
+#end
+
+#end
+#end 		)
+	</insert>
+
+	<!--修改数据-->
+	<update id="update" parameterType="${resultClass}">
+		update ${tableName}
+		set
+#foreach ($field in $fieldList)
+#if(${velocityCount} !=  ${fieldList.size()})
+			${field.fieldname} = #{${field.fieldname}},
+#else
+			${field.fieldname} = #{${field.fieldname}}
+#end
+#end		
+		where
+        id=#{id}
+	</update>
+
+	<!--选择修改数据-->
+	<update id="updateSelective" parameterType="${resultClass}">
+		update ${tableName}
+		<set>
+#foreach ($field in $fieldList)	
+#if(${velocityCount} !=  ${fieldList.size()})
+#if(${field.datatype} == "String")##
+			<if test="${field.fieldname} != null and ${field.fieldname}  != '' ">
+				${field.fieldname} = #{${field.fieldname}},
+			</if>
+#else
+			<if test="${field.fieldname} != null">
+				${field.fieldname} = #{${field.fieldname}},
+			</if>
+#end
+#else
+#if(${field.datatype} == "String")##
+			<if test="${field.fieldname} != null and ${field.fieldname}  != '' ">
+				${field.fieldname} = #{${field.fieldname}}
+			</if>
+#else
+			<if test="${field.fieldname} != null">
+				${field.fieldname} = #{${field.fieldname}}
+			</if>
+#end
+#end
+#end
+		</set>
+		where
+        	id=#{id}
+	</update>
+
+	<!--根据主键删除数据-->
+	<delete id="delete" parameterType="java.lang.String">
+		delete from  ${tableName}
+		where id = #{id}
+	</delete>
+</mapper>

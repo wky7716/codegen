@@ -1,0 +1,25 @@
+package com.kingstardi.dao.${path};
+
+import org.springframework.stereotype.Repository;
+import com.kingstardi.dao.base.BaseMapper;
+import java.util.List;
+import com.kingstardi.entity.core.${className};
+
+@Repository
+public interface ${className}Mapper extends BaseMapper {
+
+	${className} get(String id);
+
+	List<${className}> queryPage(${className} entity);
+
+	void update(${className} entity);
+
+	void updateSelective(${className} entity);
+
+	void insert(${className} entity);
+
+	void insertSelective(${className} entity);
+
+	void delete(String id);
+
+}

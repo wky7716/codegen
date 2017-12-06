@@ -1,0 +1,10 @@
+package  com.kingstardi.dao.${path};
+
+import org.springframework.stereotype.Repository;
+
+import com.kingstardi.dao.base.BaseMapper;
+
+@Repository
+public interface ${className}ManualMapper extends BaseMapper {
+
+}

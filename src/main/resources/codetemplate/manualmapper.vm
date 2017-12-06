@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${namespace}">
+
+    <resultMap id="BaseResultMap" type="${resultClass}">
+	#foreach ($field in $fieldList)
+	<result property="${field.fieldname}" column="${field.fieldname}" />
+	#end
+</resultMap>
+
+
+    <!-- 通用查询结果列-->
+	<sql id="Columns">
+	#foreach ($field in $fieldList)
+#if(${velocityCount} ==  1)
+	${field.fieldname},##
+#elseif(${velocityCount} !=  ${fieldList.size()})
+${field.fieldname},##
+#else
+${field.fieldname}
+#end
+#end
+	</sql>
+
+	<!--此业务功能，所有非自动生成的sql都要在该文件中编写-->
+
+</mapper>
